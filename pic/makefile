@@ -1,10 +1,10 @@
 DEVICE	= 18F2550
-CC  = /opt/microchip/xc8/v1.38/bin/xc8 -Q --chip=$(DEVICE) -I.
+CC	= /opt/microchip/xc8/v1.38/bin/xc8 -Q --chip=$(DEVICE) -I.
 DATE	= $(shell date '+_%y%m%d_%H%M%S')
 TARGET	= target
 HEADER  = app_device_keyboard.h system.h usb_config.h
-SRC = main.c app_device_keyboard.c system.c usb_descriptors.c usb/src/usb_device.c usb/src/usb_device_hid.c
-OBJS  = $(SRC:.c=.p1)
+SRC	= main.c app_device_keyboard.c system.c usb_descriptors.c usb/src/usb_device.c usb/src/usb_device_hid.c
+OBJ	= $(SRC:.c=.p1)
 
 help:
 	@awk '/#[#]/{sub(":[^#]*", "\t\t");print $0;}' makefile
@@ -53,13 +53,14 @@ $(TARGET).hex:	$(OBJ)
 
 
 %.p1: %.c $(HEADER)
-	@mkdir -p hist
+	@mkdir -p hist/usb/src
 	cp $< hist/$<$(DATE)
-  $(CC) --pass1 -O$@ $<
+	$(CC) --pass1 -O$@ $<
   
 
 %.done:	%
 	@mkdir -p hist
 	cp $< hist/$<$(DATE)
 	touch $@
+
 
